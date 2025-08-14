@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients - Dior's Braiding Studio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 2rem 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.5rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link i {
+            margin-right: 1rem;
+            width: 20px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 300px;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            border-color: #8B4513;
+            outline: none;
+        }
+
+        .add-client-btn {
+            background: #8B4513;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-client-btn:hover {
+            background: #A0522D;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            border-left: 4px solid #8B4513;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .clients-table {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: #8B4513;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-content {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f8f8;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .client-row {
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .client-row:hover {
+            background: #f8f8f8;
+        }
+
+        .client-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #8B4513;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .client-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .client-details {
+            flex: 1;
+        }
+
+        .client-name {
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .client-contact {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .loyalty-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .loyalty-gold {
+            background: #FFD700;
+            color: #8B4513;
+        }
+
+        .loyalty-silver {
+            background: #C0C0C0;
+            color: #666;
+        }
+
+        .loyalty-bronze {
+            background: #CD7F32;
+            color: white;
+        }
+
+        .loyalty-new {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .client-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-view {
+            background: #8B4513;
+            color: white;
+        }
+
+        .btn-book {
+            background: #FFD700;
+            color: #8B4513;
+        }
+
+        .service-history {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        .service-tag {
+            background: #f0f0f0;
+            color: #666;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            Dior's Studio Dashboard
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="appointments.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Appointments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="clients.html" class="nav-link active">
+                    <i class="fas fa-users"></i>
+                    <span>Clients</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="revenue.html" class="nav-link">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Revenue</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="staff.html" class="nav-link">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Staff</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="settings.html" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span>View Website</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Client Management</h1>
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Search clients by name, phone, or service...">
+                <button class="add-client-btn">
+                    <i class="fas fa-user-plus"></i> Add Client
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value">127</div>
+                <div class="stat-label">Total Clients</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">New This Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">85%</div>
+                <div class="stat-label">Retention Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">$340</div>
+                <div class="stat-label">Avg. Lifetime Value</div>
+            </div>
+        </div>
+
+        <div class="clients-table">
+            <div class="table-header">
+                <span>Client Database</span>
+                <span>127 total clients</span>
+            </div>
+            <div class="table-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Contact</th>
+                            <th>Last Visit</th>
+                            <th>Total Spent</th>
+                            <th>Loyalty Status</th>
+                            <th>Preferred Services</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="client-row">
+                            <td>
+                                <div class="client-info">
+                                    <div class="client-avatar">AJ</div>
+                                    <div class="client-details">
+                                        <div class="client-name">Aisha Johnson</div>
+                                        <div class="client-contact">Regular since Nov 2023</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>(917) 555-0123</div>
+                                <div style="color: #666; font-size: 0.9rem;">aisha.j@email.com</div>
+                            </td>
+                            <td>Jan 14, 2024</td>
+                            <td>$720</td>
+                            <td><span class="loyalty-badge loyalty-gold">Gold Member</span></td>
+                            <td>
+                                <div class="service-history">
+                                    <span class="service-tag">Box Braids</span>
+                                    <span class="service-tag">Hair Care</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="client-actions">
+                                    <button class="btn btn-view">View</button>
+                                    <button class="btn btn-book">Book</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="client-row">
+                            <td>
+                                <div class="client-info">
+                                    <div class="client-avatar">MW</div>
+                                    <div class="client-details">
+                                        <div class="client-name">Maya Williams</div>
+                                        <div class="client-contact">Regular since Dec 2023</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>(646) 555-0198</div>
+                                <div style="color: #666; font-size: 0.9rem;">maya.w@email.com</div>
+                            </td>
+                            <td>Jan 14, 2024</td>
+                            <td>$580</td>
+                            <td><span class="loyalty-badge loyalty-silver">Silver Member</span></td>
+                            <td>
+                                <div class="service-history">
+                                    <span class="service-tag">Goddess Braids</span>
+                                    <span class="service-tag">Cornrows</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="client-actions">
+                                    <button class="btn btn-view">View</button>
+                                    <button class="btn btn-book">Book</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="client-row">
+                            <td>
+                                <div class="client-info">
+                                    <div class="client-avatar">ZT</div>
+                                    <div class="client-details">
+                                        <div class="client-name">Zara Thompson</div>
+                                        <div class="client-contact">New client - Jan 2024</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>(212) 555-0176</div>
+                                <div style="color: #666; font-size: 0.9rem;">zara.t@email.com</div>
+                            </td>
+                            <td>Jan 13, 2024</td>
+                            <td>$75</td>
+                            <td><span class="loyalty-badge loyalty-new">New Client</span></td>
+                            <td>
+                                <div class="service-history">
+                                    <span class="service-tag">Kids Style</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="client-actions">
+                                    <button class="btn btn-view">View</button>
+                                    <button class="btn btn-book">Book</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="client-row">
+                            <td>
+                                <div class="client-info">
+                                    <div class="client-avatar">KD</div>
+                                    <div class="client-details">
+                                        <div class="client-name">Keisha Davis</div>
+                                        <div class="client-contact">Regular since Oct 2023</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>(718) 555-0145</div>
+                                <div style="color: #666; font-size: 0.9rem;">keisha.d@email.com</div>
+                            </td>
+                            <td>Jan 15, 2024</td>
+                            <td>$450</td>
+                            <td><span class="loyalty-badge loyalty-bronze">Bronze Member</span></td>
+                            <td>
+                                <div class="service-history">
+                                    <span class="service-tag">Cornrows</span>
+                                    <span class="service-tag">Express</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="client-actions">
+                                    <button class="btn btn-view">View</button>
+                                    <button class="btn btn-book">Book</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="client-row">
+                            <td>
+                                <div class="client-info">
+                                    <div class="client-avatar">JB</div>
+                                    <div class="client-details">
+                                        <div class="client-name">Jasmine Brown</div>
+                                        <div class="client-contact">Regular since Nov 2023</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>(347) 555-0187</div>
+                                <div style="color: #666; font-size: 0.9rem;">jasmine.b@email.com</div>
+                            </td>
+                            <td>Jan 15, 2024</td>
+                            <td>$320</td>
+                            <td><span class="loyalty-badge loyalty-silver">Silver Member</span></td>
+                            <td>
+                                <div class="service-history">
+                                    <span class="service-tag">Hair Care</span>
+                                    <span class="service-tag">Box Braids</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="client-actions">
+                                    <button class="btn btn-view">View</button>
+                                    <button class="btn btn-book">Book</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="client-row">
+                            <td>
+                                <div class="client-info">
+                                    <div class="client-avatar">TC</div>
+                                    <div class="client-details">
+                                        <div class="client-name">Tiana Campbell</div>
+                                        <div class="client-contact">VIP client since Sep 2023</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>(929) 555-0234</div>
+                                <div style="color: #666; font-size: 0.9rem;">tiana.c@email.com</div>
+                            </td>
+                            <td>Jan 10, 2024</td>
+                            <td>$1,240</td>
+                            <td><span class="loyalty-badge loyalty-gold">Gold Member</span></td>
+                            <td>
+                                <div class="service-history">
+                                    <span class="service-tag">Goddess Braids</span>
+                                    <span class="service-tag">Hair Care</span>
+                                    <span class="service-tag">Box Braids</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="client-actions">
+                                    <button class="btn btn-view">View</button>
+                                    <button class="btn btn-book">Book</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="client-row">
+                            <td>
+                                <div class="client-info">
+                                    <div class="client-avatar">SJ</div>
+                                    <div class="client-details">
+                                        <div class="client-name">Solange Johnson</div>
+                                        <div class="client-contact">New client - Jan 2024</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>(516) 555-0156</div>
+                                <div style="color: #666; font-size: 0.9rem;">solange.j@email.com</div>
+                            </td>
+                            <td>Jan 8, 2024</td>
+                            <td>$150</td>
+                            <td><span class="loyalty-badge loyalty-new">New Client</span></td>
+                            <td>
+                                <div class="service-history">
+                                    <span class="service-tag">Cornrows</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="client-actions">
+                                    <button class="btn btn-view">View</button>
+                                    <button class="btn btn-book">Book</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

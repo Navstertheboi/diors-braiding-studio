@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff - Dior's Braiding Studio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 2rem 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.5rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link i {
+            margin-right: 1rem;
+            width: 20px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 2rem;
+        }
+
+        .add-staff-btn {
+            background: #8B4513;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-staff-btn:hover {
+            background: #A0522D;
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .staff-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border-left: 4px solid #8B4513;
+        }
+
+        .staff-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .staff-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .staff-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-right: 1.5rem;
+        }
+
+        .staff-info {
+            flex: 1;
+        }
+
+        .staff-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 0.5rem;
+        }
+
+        .staff-role {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .staff-experience {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .staff-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f8f8;
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .staff-specialties {
+            margin: 1.5rem 0;
+        }
+
+        .specialties-title {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 0.8rem;
+        }
+
+        .specialty-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .specialty-tag {
+            background: #FFD700;
+            color: #8B4513;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .staff-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #8B4513;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f8f8f8;
+            color: #8B4513;
+            border: 1px solid #8B4513;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .schedule-overview {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 1.5rem;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+        }
+
+        .day-column {
+            text-align: center;
+        }
+
+        .day-header {
+            font-weight: bold;
+            color: #8B4513;
+            padding: 1rem;
+            background: #f8f8f8;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .schedule-slot {
+            background: #fff8dc;
+            border: 1px solid #8B4513;
+            border-radius: 6px;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .schedule-slot.busy {
+            background: #ffe6e6;
+            border-color: #ff6b6b;
+        }
+
+        .schedule-slot.available {
+            background: #e8f5e8;
+            border-color: #4caf50;
+        }
+
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            border-left: 4px solid #FFD700;
+        }
+
+        .metric-title {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 1rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-description {
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            Dior's Studio Dashboard
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="appointments.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Appointments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="clients.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Clients</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="revenue.html" class="nav-link">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Revenue</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="staff.html" class="nav-link active">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Staff</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="settings.html" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span>View Website</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Staff Management</h1>
+            <button class="add-staff-btn">
+                <i class="fas fa-user-plus"></i> Add Staff Member
+            </button>
+        </div>
+
+        <div class="staff-grid">
+            <div class="staff-card">
+                <div class="staff-header">
+                    <div class="staff-avatar">D</div>
+                    <div class="staff-info">
+                        <div class="staff-name">Dior</div>
+                        <div class="staff-role">Owner & Master Braider</div>
+                        <div class="staff-experience">8+ years experience</div>
+                    </div>
+                </div>
+
+                <div class="staff-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">$7,200</div>
+                        <div class="stat-label">Monthly Revenue</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">45</div>
+                        <div class="stat-label">Clients This Month</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">4.9★</div>
+                        <div class="stat-label">Avg Rating</div>
+                    </div>
+                </div>
+
+                <div class="staff-specialties">
+                    <div class="specialties-title">Specialties</div>
+                    <div class="specialty-tags">
+                        <span class="specialty-tag">Box Braids</span>
+                        <span class="specialty-tag">Goddess Braids</span>
+                        <span class="specialty-tag">Cornrows</span>
+                        <span class="specialty-tag">Premium Styles</span>
+                    </div>
+                </div>
+
+                <div class="staff-actions">
+                    <button class="btn btn-primary">View Schedule</button>
+                    <button class="btn btn-secondary">Edit Profile</button>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <div class="staff-header">
+                    <div class="staff-avatar">M</div>
+                    <div class="staff-info">
+                        <div class="staff-name">Maya</div>
+                        <div class="staff-role">Senior Stylist</div>
+                        <div class="staff-experience">5+ years experience</div>
+                    </div>
+                </div>
+
+                <div class="staff-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">$3,400</div>
+                        <div class="stat-label">Monthly Revenue</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">28</div>
+                        <div class="stat-label">Clients This Month</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">4.7★</div>
+                        <div class="stat-label">Avg Rating</div>
+                    </div>
+                </div>
+
+                <div class="staff-specialties">
+                    <div class="specialties-title">Specialties</div>
+                    <div class="specialty-tags">
+                        <span class="specialty-tag">Goddess Braids</span>
+                        <span class="specialty-tag">Hair Care</span>
+                        <span class="specialty-tag">Protective Styles</span>
+                    </div>
+                </div>
+
+                <div class="staff-actions">
+                    <button class="btn btn-primary">View Schedule</button>
+                    <button class="btn btn-secondary">Edit Profile</button>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <div class="staff-header">
+                    <div class="staff-avatar">K</div>
+                    <div class="staff-info">
+                        <div class="staff-name">Kira</div>
+                        <div class="staff-role">Kids Specialist</div>
+                        <div class="staff-experience">3+ years experience</div>
+                    </div>
+                </div>
+
+                <div class="staff-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">$850</div>
+                        <div class="stat-label">Monthly Revenue</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Clients This Month</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">4.8★</div>
+                        <div class="stat-label">Avg Rating</div>
+                    </div>
+                </div>
+
+                <div class="staff-specialties">
+                    <div class="specialties-title">Specialties</div>
+                    <div class="specialty-tags">
+                        <span class="specialty-tag">Kids Braids</span>
+                        <span class="specialty-tag">Gentle Styling</span>
+                        <span class="specialty-tag">Quick Styles</span>
+                    </div>
+                </div>
+
+                <div class="staff-actions">
+                    <button class="btn btn-primary">View Schedule</button>
+                    <button class="btn btn-secondary">Edit Profile</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="schedule-overview">
+            <h2 class="section-title">This Week's Schedule Overview</h2>
+            <div class="schedule-grid">
+                <div class="day-column">
+                    <div class="day-header">Mon</div>
+                    <div class="schedule-slot available">Dior: Free</div>
+                    <div class="schedule-slot available">Maya: Free</div>
+                    <div class="schedule-slot available">Kira: Free</div>
+                </div>
+
+                <div class="day-column">
+                    <div class="day-header">Tue</div>
+                    <div class="schedule-slot busy">Dior: 10-2pm</div>
+                    <div class="schedule-slot available">Maya: Free</div>
+                    <div class="schedule-slot busy">Kira: 4-6pm</div>
+                </div>
+
+                <div class="day-column">
+                    <div class="day-header">Wed</div>
+                    <div class="schedule-slot busy">Dior: 9-1pm</div>
+                    <div class="schedule-slot busy">Maya: 1-4pm</div>
+                    <div class="schedule-slot available">Kira: Free</div>
+                </div>
+
+                <div class="day-column">
+                    <div class="day-header">Thu</div>
+                    <div class="schedule-slot available">Dior: Free</div>
+                    <div class="schedule-slot busy">Maya: 11-3pm</div>
+                    <div class="schedule-slot busy">Kira: 3-6pm</div>
+                </div>
+
+                <div class="day-column">
+                    <div class="day-header">Fri</div>
+                    <div class="schedule-slot busy">Dior: 10-4pm</div>
+                    <div class="schedule-slot busy">Maya: 10-2pm</div>
+                    <div class="schedule-slot available">Kira: Free</div>
+                </div>
+
+                <div class="day-column">
+                    <div class="day-header">Sat</div>
+                    <div class="schedule-slot busy">Dior: 9-5pm</div>
+                    <div class="schedule-slot busy">Maya: 9-3pm</div>
+                    <div class="schedule-slot busy">Kira: 12-6pm</div>
+                </div>
+
+                <div class="day-column">
+                    <div class="day-header">Sun</div>
+                    <div class="schedule-slot available">Dior: Free</div>
+                    <div class="schedule-slot available">Maya: Free</div>
+                    <div class="schedule-slot available">Kira: Free</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <h2 style="color: #8B4513; margin-bottom: 1.5rem;">Staff Performance Insights</h2>
+            <div class="performance-metrics">
+                <div class="metric-card">
+                    <div class="metric-title">
+                        <i class="fas fa-crown"></i> Top Performer
+                    </div>
+                    <div class="metric-value">Dior</div>
+                    <div class="metric-description">
+                        Consistently highest revenue generator with premium pricing and 95% client retention rate.
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-title">
+                        <i class="fas fa-star"></i> Best Client Satisfaction
+                    </div>
+                    <div class="metric-value">4.9★</div>
+                    <div class="metric-description">
+                        Dior maintains the highest client satisfaction rating with consistent 5-star reviews.
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-title">
+                        <i class="fas fa-heart"></i> Specialist Recognition
+                    </div>
+                    <div class="metric-value">Kira</div>
+                    <div class="metric-description">
+                        Highest satisfaction for kids services with gentle approach and creative styling.
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-title">
+                        <i class="fas fa-clock"></i> Efficiency Leader
+                    </div>
+                    <div class="metric-value">Maya</div>
+                    <div class="metric-description">
+                        Most efficient stylist with optimal time management and quality service delivery.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue - Dior's Braiding Studio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 2rem 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.5rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link i {
+            margin-right: 1rem;
+            width: 20px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 2rem;
+        }
+
+        .date-filter {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #8B4513;
+            background: white;
+            color: #8B4513;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #8B4513;
+            color: white;
+        }
+
+        .revenue-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #8B4513;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            color: #8B4513;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-change.positive {
+            color: #27ae60;
+        }
+
+        .stat-change.negative {
+            color: #e74c3c;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 1.5rem;
+        }
+
+        .revenue-breakdown {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .breakdown-item {
+            background: #f8f8f8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 3px solid #8B4513;
+        }
+
+        .breakdown-service {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 0.5rem;
+        }
+
+        .breakdown-revenue {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .breakdown-percentage {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .projections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .projection-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #FFD700;
+        }
+
+        .projection-title {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .projection-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .projection-description {
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            Dior's Studio Dashboard
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="appointments.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Appointments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="clients.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Clients</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="revenue.html" class="nav-link active">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Revenue</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="staff.html" class="nav-link">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Staff</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="settings.html" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span>View Website</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Revenue Analytics</h1>
+            <div class="date-filter">
+                <button class="filter-btn">This Week</button>
+                <button class="filter-btn active">This Month</button>
+                <button class="filter-btn">Last 3 Months</button>
+                <button class="filter-btn">This Year</button>
+            </div>
+        </div>
+
+        <div class="revenue-stats">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Total Revenue</div>
+                    <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                </div>
+                <div class="stat-value">$11,450</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +32% from last month
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Average Daily Revenue</div>
+                    <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
+                </div>
+                <div class="stat-value">$406</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +18% from last month
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Revenue Per Client</div>
+                    <div class="stat-icon"><i class="fas fa-user-dollar"></i></div>
+                </div>
+                <div class="stat-value">$123</div>
+                <div class="stat-change negative">
+                    <i class="fas fa-arrow-down"></i> -5% from last month
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Profit Margin</div>
+                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                </div>
+                <div class="stat-value">68%</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +3% from last month
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-card">
+                <div class="chart-title">Monthly Revenue Trend</div>
+                <canvas id="revenueChart" width="600" height="300"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-title">Payment Methods</div>
+                <canvas id="paymentChart" width="300" height="300"></canvas>
+            </div>
+        </div>
+
+        <div class="revenue-breakdown">
+            <h2 class="chart-title">Revenue by Service Type</h2>
+            <div class="breakdown-grid">
+                <div class="breakdown-item">
+                    <div class="breakdown-service">Box Braids</div>
+                    <div class="breakdown-revenue">$5,150</div>
+                    <div class="breakdown-percentage">45% of total revenue</div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-service">Goddess Braids</div>
+                    <div class="breakdown-revenue">$2,860</div>
+                    <div class="breakdown-percentage">25% of total revenue</div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-service">Cornrows</div>
+                    <div class="breakdown-revenue">$1,720</div>
+                    <div class="breakdown-percentage">15% of total revenue</div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-service">Kids Styles</div>
+                    <div class="breakdown-revenue">$1,145</div>
+                    <div class="breakdown-percentage">10% of total revenue</div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-service">Hair Care</div>
+                    <div class="breakdown-revenue">$575</div>
+                    <div class="breakdown-percentage">5% of total revenue</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <h2 style="color: #8B4513; margin-bottom: 1.5rem;">Revenue Projections & Insights</h2>
+            <div class="projections">
+                <div class="projection-card">
+                    <div class="projection-title">
+                        <i class="fas fa-calendar-week"></i> Next Month Projection
+                    </div>
+                    <div class="projection-value">$14,200</div>
+                    <div class="projection-description">
+                        Based on current booking trends and seasonal patterns, expect 24% growth next month.
+                    </div>
+                </div>
+
+                <div class="projection-card">
+                    <div class="projection-title">
+                        <i class="fas fa-trophy"></i> Peak Revenue Day
+                    </div>
+                    <div class="projection-value">Saturday</div>
+                    <div class="projection-description">
+                        Saturdays generate 35% of weekly revenue. Consider premium weekend pricing.
+                    </div>
+                </div>
+
+                <div class="projection-card">
+                    <div class="projection-title">
+                        <i class="fas fa-bullseye"></i> Revenue Opportunity
+                    </div>
+                    <div class="projection-value">+$2,400</div>
+                    <div class="projection-description">
+                        Adding evening hours (6-8 PM) could capture $2,400 additional monthly revenue.
+                    </div>
+                </div>
+
+                <div class="projection-card">
+                    <div class="projection-title">
+                        <i class="fas fa-star"></i> Top Performer
+                    </div>
+                    <div class="projection-value">Dior</div>
+                    <div class="projection-description">
+                        Generates 60% of total revenue with premium service pricing and client loyalty.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Monthly Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: ['Nov 2023', 'Dec 2023', 'Jan 2024'],
+                datasets: [{
+                    label: 'Monthly Revenue',
+                    data: [6200, 8700, 11450],
+                    borderColor: '#8B4513',
+                    backgroundColor: 'rgba(139, 69, 19, 0.1)',
+                    borderWidth: 4,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#8B4513',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 3,
+                    pointRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Payment Methods Chart
+        const paymentCtx = document.getElementById('paymentChart').getContext('2d');
+        new Chart(paymentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Card', 'Cash', 'Venmo', 'CashApp'],
+                datasets: [{
+                    data: [55, 25, 15, 5],
+                    backgroundColor: [
+                        '#8B4513',
+                        '#D2691E',
+                        '#FFD700',
+                        '#CD853F'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

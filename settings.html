@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Dior's Braiding Studio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 2rem 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.5rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link i {
+            margin-right: 1rem;
+            width: 20px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 2rem;
+        }
+
+        .settings-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .settings-nav {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            height: fit-content;
+        }
+
+        .settings-nav-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            color: #666;
+        }
+
+        .settings-nav-item:hover,
+        .settings-nav-item.active {
+            background: #fff8dc;
+            color: #8B4513;
+        }
+
+        .settings-nav-item i {
+            margin-right: 1rem;
+            width: 20px;
+        }
+
+        .settings-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 1rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #8B4513;
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #8B4513;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f8f8f8;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .toggle-info {
+            flex: 1;
+        }
+
+        .toggle-title {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 0.3rem;
+        }
+
+        .toggle-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #8B4513;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f8f8f8;
+            color: #8B4513;
+            border: 2px solid #8B4513;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .automation-card {
+            background: #fff8dc;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .automation-title {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .automation-title i {
+            margin-right: 0.8rem;
+            color: #FFD700;
+        }
+
+        .automation-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            Dior's Studio Dashboard
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="appointments.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Appointments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="clients.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Clients</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="revenue.html" class="nav-link">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Revenue</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="staff.html" class="nav-link">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Staff</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="settings.html" class="nav-link active">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span>View Website</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Studio Settings</h1>
+        </div>
+
+        <div class="settings-container">
+            <div class="settings-nav">
+                <div class="settings-nav-item active" onclick="showSection('business')">
+                    <i class="fas fa-building"></i>
+                    <span>Business Info</span>
+                </div>
+                <div class="settings-nav-item" onclick="showSection('notifications')">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </div>
+                <div class="settings-nav-item" onclick="showSection('booking')">
+                    <i class="fas fa-calendar"></i>
+                    <span>Booking Settings</span>
+                </div>
+                <div class="settings-nav-item" onclick="showSection('automation')">
+                    <i class="fas fa-robot"></i>
+                    <span>Automation</span>
+                </div>
+                <div class="settings-nav-item" onclick="showSection('integrations')">
+                    <i class="fas fa-plug"></i>
+                    <span>Integrations</span>
+                </div>
+            </div>
+
+            <div class="settings-content">
+                <div id="business-section">
+                    <h2 class="section-title">Business Information</h2>
+                    
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label for="business-name">Business Name</label>
+                            <input type="text" id="business-name" value="Dior's Braiding Studio">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="owner-name">Owner Name</label>
+                                <input type="text" id="owner-name" value="Dior">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" value="(555) 123-BRAID">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Business Email</label>
+                            <input type="email" id="email" value="book@diorsbraiding.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea id="address">116th Street, Harlem, NY 10026</textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="open-time">Opening Time</label>
+                                <input type="time" id="open-time" value="09:00">
+                            </div>
+                            <div class="form-group">
+                                <label for="close-time">Closing Time</label>
+                                <input type="time" id="close-time" value="18:00">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="notifications-section" style="display: none;">
+                    <h2 class="section-title">Notification Settings</h2>
+                    
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <div class="toggle-title">SMS Confirmations</div>
+                            <div class="toggle-description">Send automatic SMS confirmations when appointments are booked</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Reminder Notifications</div>
+                            <div class="toggle-description">Send SMS reminders 24 hours before appointments</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Follow-up Messages</div>
+                            <div class="toggle-description">Send thank you messages and rebooking prompts after appointments</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Review Requests</div>
+                            <div class="toggle-description">Automatically request reviews from satisfied clients</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="booking-section" style="display: none;">
+                    <h2 class="section-title">Booking Configuration</h2>
+                    
+                    <div class="form-section">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="booking-window">Booking Window (days ahead)</label>
+                                <select id="booking-window">
+                                    <option value="7">1 week</option>
+                                    <option value="14">2 weeks</option>
+                                    <option value="30" selected>1 month</option>
+                                    <option value="60">2 months</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="min-notice">Minimum Notice (hours)</label>
+                                <select id="min-notice">
+                                    <option value="2">2 hours</option>
+                                    <option value="4">4 hours</option>
+                                    <option value="24" selected>24 hours</option>
+                                    <option value="48">48 hours</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <div class="toggle-title">Require Deposits</div>
+                                <div class="toggle-description">Require 25% deposit for appointments over $200</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <div class="toggle-title">Online Payments</div>
+                                <div class="toggle-description">Allow clients to pay online when booking</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="automation-section" style="display: none;">
+                    <h2 class="section-title">Smart Automation</h2>
+                    
+                    <div class="automation-card">
+                        <div class="automation-title">
+                            <i class="fas fa-magic"></i>
+                            Client Retention Workflow
+                        </div>
+                        <div class="automation-description">
+                            Automatically sends follow-up messages 5 weeks after appointments to encourage rebooking. Tracks client history and suggests personalized services.
+                        </div>
+                        <span class="status-badge status-active">Active</span>
+                    </div>
+
+                    <div class="automation-card">
+                        <div class="automation-title">
+                            <i class="fas fa-star"></i>
+                            Review Collection System
+                        </div>
+                        <div class="automation-description">
+                            Sends review requests to satisfied clients 3 days after appointments. Automatically posts positive reviews to Google and social media.
+                        </div>
+                        <span class="status-badge status-active">Active</span>
+                    </div>
+
+                    <div class="automation-card">
+                        <div class="automation-title">
+                            <i class="fas fa-birthday-cake"></i>
+                            Birthday & Anniversary Campaigns
+                        </div>
+                        <div class="automation-description">
+                            Sends personalized birthday wishes with special offers. Tracks service anniversaries and sends loyalty rewards.
+                        </div>
+                        <span class="status-badge status-inactive">Inactive</span>
+                    </div>
+
+                    <div class="automation-card">
+                        <div class="automation-title">
+                            <i class="fas fa-chart-line"></i>
+                            Dynamic Pricing
+                        </div>
+                        <div class="automation-description">
+                            Automatically adjusts pricing based on demand, peak hours, and seasonal trends. Maximizes revenue while staying competitive.
+                        </div>
+                        <span class="status-badge status-inactive">Inactive</span>
+                    </div>
+                </div>
+
+                <div id="integrations-section" style="display: none;">
+                    <h2 class="section-title">Third-Party Integrations</h2>
+                    
+                    <div class="form-section">
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <div class="toggle-title">Twilio SMS</div>
+                                <div class="toggle-description">Connected for automated text messaging</div>
+                            </div>
+                            <span class="status-badge status-active">Connected</span>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <div class="toggle-title">Supabase Database</div>
+                                <div class="toggle-description">Cloud database for client and appointment data</div>
+                            </div>
+                            <span class="status-badge status-active">Connected</span>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <div class="toggle-title">N8N Automation</div>
+                                <div class="toggle-description">Workflow automation platform</div>
+                            </div>
+                            <span class="status-badge status-active">Connected</span>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <div class="toggle-title">Square Payments</div>
+                                <div class="toggle-description">Payment processing for online bookings</div>
+                            </div>
+                            <span class="status-badge status-inactive">Not Connected</span>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <div class="toggle-title">Google My Business</div>
+                                <div class="toggle-description">Sync with Google listings and reviews</div>
+                            </div>
+                            <span class="status-badge status-inactive">Not Connected</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary">Save Changes</button>
+                    <button class="btn btn-secondary">Reset to Defaults</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = ['business', 'notifications', 'booking', 'automation', 'integrations'];
+            sections.forEach(section => {
+                document.getElementById(section + '-section').style.display = 'none';
+            });
+
+            // Remove active class from all nav items
+            document.querySelectorAll('.settings-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionName + '-section').style.display = 'block';
+
+            // Add active class to clicked nav item
+            event.target.closest('.settings-nav-item').classList.add('active');
+        }
+    </script>
+</body>
+</html>

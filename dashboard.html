@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dior's Braiding Studio - Business Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 2rem 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.5rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link i {
+            margin-right: 1rem;
+            width: 20px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 2rem;
+        }
+
+        .date-range {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #8B4513;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            color: #8B4513;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-change.positive {
+            color: #27ae60;
+        }
+
+        .stat-change.negative {
+            color: #e74c3c;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 1rem;
+        }
+
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: #8B4513;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: bold;
+        }
+
+        .table-content {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f8f8;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .client-row:hover {
+            background: #f8f8f8;
+        }
+
+        .service-tag {
+            background: #8B4513;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-upcoming {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .insight-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #FFD700;
+        }
+
+        .insight-title {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 0.5rem;
+        }
+
+        .insight-text {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .recommendation {
+            background: #fff8dc;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 3px solid #FFD700;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            Dior's Studio Dashboard
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="appointments.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Appointments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="clients.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Clients</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="revenue.html" class="nav-link">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Revenue</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="staff.html" class="nav-link">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Staff</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="settings.html" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span>View Website</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Business Analytics Dashboard</h1>
+            <div class="date-range">
+                <i class="fas fa-calendar"></i>
+                <span>Week of Jan 8-14, 2024</span>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Total Revenue</div>
+                    <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                </div>
+                <div class="stat-value">$2,840</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +18% from last week
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Appointments</div>
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                </div>
+                <div class="stat-value">23</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +35% from last week
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">New Clients</div>
+                    <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
+                </div>
+                <div class="stat-value">8</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +60% from last week
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Avg. Service Value</div>
+                    <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
+                </div>
+                <div class="stat-value">$123</div>
+                <div class="stat-change negative">
+                    <i class="fas fa-arrow-down"></i> -5% from last week
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-title">Daily Revenue Trend</div>
+                <canvas id="revenueChart" width="400" height="200"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-title">Service Popularity</div>
+                <canvas id="servicesChart" width="300" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="data-table">
+            <div class="table-header">
+                Recent Appointments
+            </div>
+            <div class="table-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Service</th>
+                            <th>Stylist</th>
+                            <th>Date</th>
+                            <th>Revenue</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="client-row">
+                            <td>Aisha Johnson</td>
+                            <td><span class="service-tag">Box Braids</span></td>
+                            <td>Dior</td>
+                            <td>Jan 14, 2024</td>
+                            <td>$180</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                        </tr>
+                        <tr class="client-row">
+                            <td>Maya Williams</td>
+                            <td><span class="service-tag">Goddess Braids</span></td>
+                            <td>Maya</td>
+                            <td>Jan 14, 2024</td>
+                            <td>$250</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                        </tr>
+                        <tr class="client-row">
+                            <td>Zara Thompson</td>
+                            <td><span class="service-tag">Kids Style</span></td>
+                            <td>Kira</td>
+                            <td>Jan 13, 2024</td>
+                            <td>$75</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                        </tr>
+                        <tr class="client-row">
+                            <td>Keisha Davis</td>
+                            <td><span class="service-tag">Cornrows</span></td>
+                            <td>Dior</td>
+                            <td>Jan 15, 2024</td>
+                            <td>$95</td>
+                            <td><span class="status-badge status-upcoming">Upcoming</span></td>
+                        </tr>
+                        <tr class="client-row">
+                            <td>Jasmine Brown</td>
+                            <td><span class="service-tag">Hair Care</span></td>
+                            <td>Maya</td>
+                            <td>Jan 15, 2024</td>
+                            <td>$60</td>
+                            <td><span class="status-badge status-upcoming">Upcoming</span></td>
+                        </tr>
+                        <tr class="client-row">
+                            <td>Nicole Wilson</td>
+                            <td><span class="service-tag">Box Braids</span></td>
+                            <td>Dior</td>
+                            <td>Jan 12, 2024</td>
+                            <td>$200</td>
+                            <td><span class="status-badge status-cancelled">Cancelled</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="margin: 2rem 0;">
+            <h2 style="color: #8B4513; margin-bottom: 1.5rem;">Smart Business Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-title">
+                        <i class="fas fa-star"></i> Top Performing Service
+                    </div>
+                    <div class="insight-text">
+                        Box Braids are your highest revenue generator, accounting for 45% of total income. Average price: $165.
+                    </div>
+                    <div class="recommendation">
+                        <strong>Recommendation:</strong> Consider offering Box Braid packages or upselling hair care treatments.
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-title">
+                        <i class="fas fa-clock"></i> Peak Hours
+                    </div>
+                    <div class="insight-text">
+                        Saturdays 10AM-2PM are your busiest. 68% of appointments happen on weekends.
+                    </div>
+                    <div class="recommendation">
+                        <strong>Recommendation:</strong> Consider weekend pricing premiums or weekday discounts to balance demand.
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-title">
+                        <i class="fas fa-users"></i> Client Retention
+                    </div>
+                    <div class="insight-text">
+                        85% of clients book their next appointment within 6-8 weeks. Average client lifetime value: $340.
+                    </div>
+                    <div class="recommendation">
+                        <strong>Recommendation:</strong> Send automated follow-up texts at 5 weeks to encourage rebooking.
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-title">
+                        <i class="fas fa-chart-line"></i> Growth Opportunity
+                    </div>
+                    <div class="insight-text">
+                        Kids services have the highest profit margin (65%) but lowest booking frequency.
+                    </div>
+                    <div class="recommendation">
+                        <strong>Recommendation:</strong> Target back-to-school promotions and partner with local daycares.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Daily Revenue',
+                    data: [180, 320, 450, 280, 680, 920, 340],
+                    borderColor: '#8B4513',
+                    backgroundColor: 'rgba(139, 69, 19, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Services Chart
+        const servicesCtx = document.getElementById('servicesChart').getContext('2d');
+        new Chart(servicesCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Box Braids', 'Goddess Braids', 'Cornrows', 'Kids Styles', 'Hair Care'],
+                datasets: [{
+                    data: [45, 25, 15, 10, 5],
+                    backgroundColor: [
+                        '#8B4513',
+                        '#D2691E',
+                        '#FFD700',
+                        '#CD853F',
+                        '#F4A460'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

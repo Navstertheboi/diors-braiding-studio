@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dior's Braiding Studio - Premium Hair Braiding in Harlem</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .book-now-btn {
+            background: #FFD700;
+            color: #8B4513;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .book-now-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(139, 69, 19, 0.8), rgba(139, 69, 19, 0.8)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f4f4f4" width="1200" height="600"/><text x="600" y="300" text-anchor="middle" fill="%23999" font-size="24" font-family="Arial">Beautiful Salon Interior</text></svg>');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #FFD700;
+            color: #8B4513;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .services {
+            padding: 5rem 0;
+            background: #f8f8f8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #8B4513;
+            margin-bottom: 3rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: #8B4513;
+            margin-bottom: 1rem;
+        }
+
+        .booking-preview {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .booking-widget {
+            background: #f8f8f8;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 2rem auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+            font-weight: bold;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .stylist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stylist-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .stylist-card:hover,
+        .stylist-card.selected {
+            border-color: #8B4513;
+            background: #fff8dc;
+        }
+
+        .footer {
+            background: #8B4513;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .stats {
+            background: #8B4513;
+            color: white;
+            padding: 3rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #FFD700;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">Dior's Braiding Studio</a>
+            <ul class="nav-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#booking">Book Now</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="book-now-btn" onclick="scrollToBooking()">
+                <i class="fas fa-calendar-alt"></i> Book Now
+            </button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Premium Hair Braiding in Harlem</h1>
+            <p>Where artistry meets tradition. Expert braiding services with a modern touch in the heart of Harlem.</p>
+            <div class="cta-buttons">
+                <a href="#booking" class="btn btn-primary">
+                    <i class="fas fa-calendar-check"></i> Book Appointment
+                </a>
+                <a href="#services" class="btn btn-secondary">
+                    <i class="fas fa-cut"></i> View Services
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>500+</h3>
+                    <p>Happy Clients</p>
+                </div>
+                <div class="stat-item">
+                    <h3>15+</h3>
+                    <p>Braid Styles</p>
+                </div>
+                <div class="stat-item">
+                    <h3>2</h3>
+                    <p>Weeks Open</p>
+                </div>
+                <div class="stat-item">
+                    <h3>5★</h3>
+                    <p>Client Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Our Signature Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Box Braids</h3>
+                    <p>Classic protective styling with premium synthetic or human hair extensions.</p>
+                    <div style="font-size: 1.2rem; color: #8B4513; font-weight: bold; margin-top: 1rem;">
+                        Starting at $150
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>Goddess Braids</h3>
+                    <p>Elegant, thick braids perfect for special occasions and everyday elegance.</p>
+                    <div style="font-size: 1.2rem; color: #8B4513; font-weight: bold; margin-top: 1rem;">
+                        Starting at $200
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Cornrows</h3>
+                    <p>Traditional cornrow patterns with modern twists and creative designs.</p>
+                    <div style="font-size: 1.2rem; color: #8B4513; font-weight: bold; margin-top: 1rem;">
+                        Starting at $80
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Kids Styles</h3>
+                    <p>Gentle, age-appropriate braiding for children with fun and colorful options.</p>
+                    <div style="font-size: 1.2rem; color: #8B4513; font-weight: bold; margin-top: 1rem;">
+                        Starting at $60
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3>Hair Care</h3>
+                    <p>Deep conditioning treatments and scalp care to keep your hair healthy.</p>
+                    <div style="font-size: 1.2rem; color: #8B4513; font-weight: bold; margin-top: 1rem;">
+                        Starting at $40
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Express Styles</h3>
+                    <p>Quick touch-ups and simple styles for busy schedules.</p>
+                    <div style="font-size: 1.2rem; color: #8B4513; font-weight: bold; margin-top: 1rem;">
+                        Starting at $50
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="booking" class="booking-preview">
+        <div class="container">
+            <h2 class="section-title">Book Your Appointment</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: #666; margin-bottom: 2rem;">
+                Choose your preferred stylist and time slot
+            </p>
+            
+            <div class="booking-widget">
+                <form>
+                    <div class="form-group">
+                        <label for="service">Select Service</label>
+                        <select id="service" name="service">
+                            <option value="">Choose a service...</option>
+                            <option value="box-braids">Box Braids - $150-250</option>
+                            <option value="goddess-braids">Goddess Braids - $200-300</option>
+                            <option value="cornrows">Cornrows - $80-120</option>
+                            <option value="kids-styles">Kids Styles - $60-100</option>
+                            <option value="hair-care">Hair Care Treatment - $40-80</option>
+                            <option value="express">Express Styles - $50-80</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Choose Your Stylist</label>
+                        <div class="stylist-grid">
+                            <div class="stylist-card" onclick="selectStylist(this, 'dior')">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">👑</div>
+                                <div><strong>Dior</strong></div>
+                                <div style="font-size: 0.9rem; color: #666;">Owner & Master Braider</div>
+                                <div style="font-size: 0.8rem; color: #8B4513; margin-top: 0.5rem;">8+ years experience</div>
+                            </div>
+                            <div class="stylist-card" onclick="selectStylist(this, 'maya')">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">✨</div>
+                                <div><strong>Maya</strong></div>
+                                <div style="font-size: 0.9rem; color: #666;">Senior Stylist</div>
+                                <div style="font-size: 0.8rem; color: #8B4513; margin-top: 0.5rem;">5+ years experience</div>
+                            </div>
+                            <div class="stylist-card" onclick="selectStylist(this, 'kira')">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💫</div>
+                                <div><strong>Kira</strong></div>
+                                <div style="font-size: 0.9rem; color: #666;">Kids Specialist</div>
+                                <div style="font-size: 0.8rem; color: #8B4513; margin-top: 0.5rem;">3+ years experience</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Preferred Date</label>
+                        <input type="date" id="date" name="date" min="2024-01-01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time">Preferred Time</label>
+                        <select id="time" name="time">
+                            <option value="">Select time...</option>
+                            <option value="09:00">9:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                        </select>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="showBookingConfirmation()">
+                        <i class="fas fa-calendar-check"></i> Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Dior's Braiding Studio. Proudly serving Harlem with premium hair braiding services.</p>
+            <p style="margin-top: 1rem;">
+                <i class="fas fa-map-marker-alt"></i> 116th Street, Harlem, NY |
+                <i class="fas fa-phone"></i> (555) 123-BRAID |
+                <i class="fas fa-envelope"></i> book@diorsbraiding.com
+            </p>
+            <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+                Website & Automation by <strong>Navster Automations</strong> - Your Harlem Tech Partner
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function scrollToBooking() {
+            document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectStylist(element, stylistId) {
+            // Remove selected class from all stylists
+            document.querySelectorAll('.stylist-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked stylist
+            element.classList.add('selected');
+        }
+
+        function showBookingConfirmation() {
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const selectedStylist = document.querySelector('.stylist-card.selected');
+            
+            if (!service || !date || !time || !selectedStylist) {
+                alert('Please fill in all fields and select a stylist.');
+                return;
+            }
+            
+            const stylistName = selectedStylist.querySelector('strong').textContent;
+            
+            alert(`Booking Confirmed!\n\nService: ${service}\nStylist: ${stylistName}\nDate: ${date}\nTime: ${time}\n\nYou'll receive a confirmation text shortly!`);
+        }
+
+        // Set minimum date to today
+        document.getElementById('date').min = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
